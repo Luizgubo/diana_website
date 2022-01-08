@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
+import {AuthProvider, useAuth} from '../contexts/AuthContext'
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
@@ -10,10 +11,12 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
-        <body className='bg-grey-200'>
-          <Main />
-          <NextScript />
-        </body>
+        <AuthProvider>
+          <body className='bg-neutral-800' style={{backgroundColor:"#211f20"}}>
+            <Main />
+            <NextScript />
+          </body>
+        </AuthProvider>
       </Html>
     )
   }

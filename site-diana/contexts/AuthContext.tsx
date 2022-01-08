@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 // import { setCookie, parseCookies } from 'nookies'
 import Router from 'next/router'
 
@@ -7,7 +7,7 @@ import Router from 'next/router'
 
 // api do firebase
 import {auth} from '../firebase';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 type User = {
   name: string;
@@ -19,33 +19,37 @@ type SignInData = {
   email: string;
   password: string;
 }
+// type AuthContextType = {
+//   // isAuthenticated: boolean;
+//   user: User;
+//   signup: (data: SignInData) => Promise<void>
+// }
 
-type AuthContextType = {
-  // isAuthenticated: boolean;
-  user: User;
-  signup: (data: SignInData) => Promise<void>
-}
 
-export const AuthContext = createContext({} as AuthContextType)
+const AuthContext = createContext({});
 
 export function useAuth() {
   return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(null);
 
-  function signup({email, password}) {
-    console.log('o povo do ghetto');
+  function login(a,b) {
+    console.log(a);
+    console.log(b);
+    return true;
+  }
+
+  function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
   }
 
-  const value = {
+  const valor = {
+    login,
     user,
     signup
   }
-
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(usuario => {
       setUser(usuario);
@@ -55,7 +59,7 @@ export function AuthProvider({ children }) {
 
 
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={valor}>
       {children}
     </AuthContext.Provider>
   )
